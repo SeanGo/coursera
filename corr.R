@@ -21,15 +21,10 @@ corr <- function(directory, threshold = 0) {
 			filepath <- sprintf("./%s/%03d.csv", directory, myid)
 			#print(filepath)
 			dataset <- data.frame(read.csv(filepath));
-			if (myid == 275)
-				print(nrow(dataset))
 			#print(dim(dataset))
 			sub <- dataset[!is.na(dataset$Date) & !is.na(dataset$sulfate) & !is.na(dataset$nitrate) & !is.na(dataset$ID), ]
 			if (nrow(sub) > threshold) {
 				result[length(result) + 1] <<- cor(sub$sulfate, sub$nitrate)
-			}
-			if (myid == 275) {
-				print(paste(nrow(sub), nrow(na.omit(dataset))))
 			}
 		}, error = function(err) {
 			print(err)
