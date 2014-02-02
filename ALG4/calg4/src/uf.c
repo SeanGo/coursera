@@ -96,75 +96,58 @@
  */
 
 /**
- * @brief new_uf create UF object and alloc memory space
+ * @brief create UF object and alloc memory space
  * @param N is the amount number of elements
  * @return the new instans of UF when succeeded othewise return NULL pointer
  */
-UF* uf_new(int N)
+BOOL uf_new(UFSET* ufset, int N)
 {
 	UF* uf = 0;
 	if (N < 0) return (0);
 
 	uf = malloc(sizeof(UF));
 	if (uf) {
+		int i = 0;
         uf->length = N;
         uf->id     = (int*)malloc(sizeof(int) * N);
         uf->rank   = (char*)malloc(sizeof(char) * N);
-        uf->count  = 0;
+        uf->count  = N;
+		for (; i < N; i++)
+            uf->id[i] = i, uf->rank[i] = 0;
 	}
 
-	return uf;
+	ufset->uf = uf;
+	return (uf != 0);
 }
 
 /**
- * @brief free_uf will free UF object
+ * @brief free UF object
  * @param uf is the instans of UF
  */
-void uf_free(UF* uf)
+void uf_free(UFSET* ufset)
 {
-	if (uf) {
-		free(uf->id);
-		free(uf->rank);
+	if (ufset->uf) {
+		if (ufset->uf->id) free(ufset->uf->id);
+		if (ufset->uf->rank) free(ufset->uf->rank);
+		free(ufset->uf);
+		ufset->uf = 0;
 	}
-	free(uf);
 }
-
-/**
- * @brief generate_uf generate and initial a UF object
- * @param N is the amout number of elements
- * @return the new instans of UF when succeeded othewise return NULL pointer
- */
-UF* uf_generate(int N)
-{
-    //create new instans
-    UF* uf = uf_new(N);
-
-    //initial value
-	if (uf) {
-		int i = 0;
-		for (; i < N; ++i)
-			uf->id[i] = i,
-			uf->rank[i] = 0;
-        uf->count = N;
-	}
-	return uf;
-}
-
 
 /**
  * @brief Returns the component identifier for the component containing site <tt>p</tt>.
  * @param p the integer representing one object, if could not find return -1
  * @return the component identifier for the component containing site <tt>p</tt>
  */
-int uf_find(const UF* uf, int p) {
+int uf_find(const UFSET* ufset, int p) {
     //verify param
-    if (!uf || p < 0 || p >= uf->length)
+    if (!ufset->uf || p < 0 || p >= ufset->uf->length)
         return (-1);
 
     //find the root element
-    while (p != uf->id[p]) {
-        uf->id[p] = uf->id[uf->id[p]];    // path compression by halving
-        p = uf->id[p];
+    while (p != ufset->uf->id[p]) {
+        ufset->uf->id[p] = ufset->uf->id[ufset->uf->id[p]];    // path compression by halving
+        p = ufset->uf->id[p];
     }
     return p;
 }
@@ -174,8 +157,8 @@ int uf_find(const UF* uf, int p) {
  * @param uf is the instans of UF object
  * @return the number of components (between <tt>1</tt> and <tt>N</tt>)
  */
-int uf_count(const UF* uf) {
-    return uf->count;
+int uf_count(const UFSET* ufset) {
+    return ufset->uf->count;
 }
 
 /**
@@ -184,9 +167,9 @@ int uf_count(const UF* uf) {
  * @param q the integer representing the other site
  * @return true if the two sites <tt>p</tt> and <tt>q</tt> are in the same component; false otherwise
  */
-BOOL uf_connected(const UF* uf, int p, int q) {
-    int ip = uf_find(uf, p);
-    int iq = uf_find(uf, q);
+BOOL uf_connected(const UFSET* ufset, int p, int q) {
+    int ip = uf_find(ufset, p);
+    int iq = uf_find(ufset, q);
     if (ip != -1 && iq != -1)
         return (ip == iq);
     else
@@ -200,25 +183,48 @@ BOOL uf_connected(const UF* uf, int p, int q) {
  * @param p the integer representing one site
  * @param q the integer representing the other site
  */
-BOOL uf_union(UF* uf, int p, int q) {
-    int i = uf_find(uf, p);
-    int j = uf_find(uf, q);
-    if (-1 == i || -1 == j)
-        return FALSE;
-
-    if (i == j) return TRUE;
+void uf_union(UFSET* ufset, int p, int q) {
+    int i = uf_find(ufset, p);
+    int j = uf_find(ufset, q);
+    if (i == j) return;
 
     // make root of smaller rank point to root of larger rank
-    if (uf->rank[i] < uf->rank[j])
-        uf->id[i] = j;
-    else if (uf->rank[i] > uf->rank[j])
-        uf->id[j] = i;
+    if (ufset->uf->rank[i] < ufset->uf->rank[j])
+        ufset->uf->id[i] = j;
+    else if (ufset->uf->rank[i] > ufset->uf->rank[j])
+        ufset->uf->id[j] = i;
     else {
-        uf->id[j] = i;
-        uf->rank[i]++;
+        ufset->uf->id[j] = i;
+        ufset->uf->rank[i]++;
     }
-    uf->count--;
+    --ufset->uf->count;
+}
 
-    return TRUE;
+/**
+ * generate a UF_ALG for uf algrithm
+ * @param N is the size of uf
+ */
+UF_ALG* new_uf_alg(int N)
+{
+	UF_ALG* uf_alg       = malloc(sizeof(UF_ALG));
+	uf_alg->ufset        = malloc(sizeof(UFSET));
+	uf_alg->UF_NEW       = uf_new;
+	uf_alg->UF_FREE      = uf_free;
+	uf_alg->UF_FIND      = uf_find;
+	uf_alg->UF_COUNT     = uf_count;
+	uf_alg->UF_CONNECTED = uf_connected;
+	uf_alg->UF_UNION     = uf_union;
+	
+	return uf_alg;
+}
+
+void free_uf_alg(UF_ALG* uf_alg)
+{
+	if (uf_alg) {
+		if (uf_alg->ufset) {
+			free(uf_alg->ufset);
+		}
+		free(uf_alg);
+	}
 }
 
