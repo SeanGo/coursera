@@ -94,24 +94,24 @@ static int test_uf(void)
 	printf("test for uf\n");
 	UF_ALG* uf_alg = new_uf_alg();
 	test_uf_files(uf_alg, 3);
-    free_uf_alg(uf_alg);
+	free_uf_alg(uf_alg);
 
 	printf("\ntest for qfuf\n");
 	uf_alg = new_qfuf_alg();
 	//i do not want run 3rd file for qfuf
 	test_uf_files(uf_alg, 2);
-    free_uf_alg(uf_alg);
+	free_uf_alg(uf_alg);
 
 	printf("\ntest for quuf\n");
 	uf_alg = new_quuf_alg();
 	//i do not want run 3rd file for quuf
 	test_uf_files(uf_alg, 2);
-    free_uf_alg(uf_alg);
+	free_uf_alg(uf_alg);
 
 	printf("\ntest for wquuf\n");
 	uf_alg = new_wquuf_alg();
 	test_uf_files(uf_alg, 3);
-    free_uf_alg(uf_alg);
+	free_uf_alg(uf_alg);
 
 	return (0);
 }
