@@ -1,0 +1,27 @@
+test for uf
+tinyUF.txt:
+2 Components, time usage 0 ms
+mediumUF.txt:
+3 Components, time usage 0 ms
+largeUF.txt:
+6 Components, time usage 120 ms
+
+test for qfuf
+tinyUF.txt:
+2 Components, time usage 0 ms
+mediumUF.txt:
+3 Components, time usage 1 ms
+
+test for quuf
+tinyUF.txt:
+2 Components, time usage 0 ms
+mediumUF.txt:
+3 Components, time usage 0 ms
+
+test for wquuf
+tinyUF.txt:
+2 Components, time usage 0 ms
+mediumUF.txt:
+3 Components, time usage 0 ms
+largeUF.txt:
+6 Components, time usage 186 ms
