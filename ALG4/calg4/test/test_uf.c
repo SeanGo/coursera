@@ -1,6 +1,7 @@
 #include "calg4.h"
 
 static char datapath[MAX_PATH];
+static char* uf_data_file[] = {"tinyUF.txt", "mediumUF.txt", "largeUF.txt"};
 
 /**
  * Read all data from file
@@ -38,6 +39,7 @@ static int* read_data(const char* filepath, int* N, size_t *data_len)
 				sscanf(tmp, "%d%d", node + i, node + i + 1);
 				i += 2;
 			}
+			printf("has %d nodes, %u datas\n", *N, *data_len);
 		}
 	}
 	
@@ -78,15 +80,18 @@ static int test_one_uf_file(const char* filepath, UF_ALG* uf_alg)
 
 static void test_uf_files(UF_ALG* uf_alg, int n_files)
 {
-    char* file[] = {"tinyUF.txt", "mediumUF.txt", "largeUF.txt"};
     char filepath[MAX_PATH];
     int i;
 
     for (i = 0; i < n_files; ++i) {
-        snprintf(filepath, MAX_PATH, "%s/%s", datapath, file[i]);
-        printf("%s:\n", file[i]);
-        test_one_uf_file(filepath, uf_alg);
+		printf("File %s ", uf_data_file[i]);
+        snprintf(filepath, MAX_PATH, "%s/%s", datapath, uf_data_file[i]);
+		test_one_uf_file(filepath, uf_alg);
     }
+    
+    if (n_files < 3) {
+		printf("I don not want to try %s, it will take very long time\n", uf_data_file[2]);
+	}
 }
 
 static int test_uf(void)
@@ -119,7 +124,7 @@ static int test_uf(void)
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
-        printf("Usage: test <data path>\n");
+        printf("Usage: test_uf <data path>\n");
         return (0);
     }
 
