@@ -2,6 +2,12 @@
 #define __uf_set_h_include__
 
 /**
+ * head files for Union-Find
+ * @author Sean Go
+ */
+
+
+/**
   struct UF for Union and Find
   */
 typedef struct UF {

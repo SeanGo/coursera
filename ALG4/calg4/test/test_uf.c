@@ -1,5 +1,10 @@
 #include "calg4.h"
 
+/**
+ * test all 4 kind of UF algorithm
+ * @author Sean Go
+ */
+
 static char datapath[MAX_PATH];
 static char* uf_data_file[] = {"tinyUF.txt", "mediumUF.txt", "largeUF.txt"};
 

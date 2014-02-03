@@ -2,6 +2,12 @@
 #define __str_h_include__
 
 /**
+ * head files for utilities functions for string in C
+ * @author Sean Go
+ */
+
+
+/**
  ltrim remove space ont the left of s
 
  ltrim returns a pointer that's not suitable for passing to free. 
