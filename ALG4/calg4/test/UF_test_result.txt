@@ -1,0 +1,29 @@
+test for uf
+File tinyUF.txt has 10 nodes, 22 datas
+2 Components, time usage 0 ms
+File mediumUF.txt has 625 nodes, 1800 datas
+3 Components, time usage 0 ms
+File largeUF.txt has 1000000 nodes, 4000000 datas
+6 Components, time usage 112 ms
+
+test for qfuf
+File tinyUF.txt has 10 nodes, 22 datas
+2 Components, time usage 0 ms
+File mediumUF.txt has 625 nodes, 1800 datas
+3 Components, time usage 0 ms
+I don not want to try largeUF.txt, it will take very long time
+
+test for quuf
+File tinyUF.txt has 10 nodes, 22 datas
+2 Components, time usage 0 ms
+File mediumUF.txt has 625 nodes, 1800 datas
+3 Components, time usage 0 ms
+I don not want to try largeUF.txt, it will take very long time
+
+test for wquuf
+File tinyUF.txt has 10 nodes, 22 datas
+2 Components, time usage 0 ms
+File mediumUF.txt has 625 nodes, 1800 datas
+3 Components, time usage 0 ms
+File largeUF.txt has 1000000 nodes, 4000000 datas
+6 Components, time usage 182 ms
