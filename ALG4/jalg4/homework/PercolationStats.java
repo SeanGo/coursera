@@ -4,12 +4,12 @@ import java.lang.*;
  * Created by sean on 2/4/14.
  */
 public class PercolationStats {
-    private int N;  ///N-by-N grid
-    private int T;  ///T independent computational experiments
+    private int N; ///N-by-N grid
+    private int T; ///T independent computational experiments
     private double[] radio; ///the radio array
-    private double mu;      ///mean of radio
-    private double std;     ///stddev of radio
-    private double hiconf;  ///upper bound of the 95% confidence interval
+    private double mu; ///mean of radio
+    private double std; ///stddev of radio
+    private double hiconf; ///upper bound of the 95% confidence interval
     private double lowconf; ///lower bound of the 95% confidence interval
 
     /**
@@ -19,7 +19,7 @@ public class PercolationStats {
      * @throws java.lang.IllegalArgumentException when N ≤ 0 or T < 2.
      */
     public PercolationStats(int N, int T)
-        throws java.lang.IllegalArgumentException
+            throws java.lang.IllegalArgumentException
     {
         if (N <= 0 || T < 2)
             throw new java.lang.IllegalArgumentException();
@@ -119,3 +119,4 @@ public class PercolationStats {
 
     }
 }
+
