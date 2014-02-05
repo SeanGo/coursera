@@ -17,8 +17,35 @@ for poweroftwo in range(4, 13):
     for run in range(n_runs):
         pi_est = 4.0 * direct_pi(n_trials) / float(n_trials)
         sigma += (pi_est - math.pi) ** 2
-    sigmas.append(math.sqrt(sigma/(n_runs - 1)))
+    rms_err = math.sqrt(sigma/(n_runs))
+    sigmas.append(rms_err)
     n_trials_list.append(n_trials)
+    print poweroftwo, rms_err, n_trials
+
+for i in range(1, len(n_trials_list)):
+    print sigmas[i] / sigmas[i - 1], n_trials_list[i]/n_trials_list[i - 1], sigmas[i]
+
+#
+# the mean of sigmas[i] / sigmas[i - 1] is aboub 0.7
+#
+# asume the n_trails^(-a) = K * rms_err
+# n_1^(-a) = K * rms_err_1, n_2^(-a) = K * rms_err_2
+# n_1^(-a) / n_2^(-a) = (K * rms_err_1) / (K * rms_err_2) = 0.7
+# (n_1/n_2)^(-a) = 0.7
+# 2^(-a) = 0.7
+# then a = - log_2(0.7)
+# and K = n_trails^(-a) / rms_err
+#
+
+a = - math.log(0.7, 2)
+print a
+# get 0.51457317283 for example
+
+# get the K value
+for i in range(1, len(n_trials_list)):
+    print math.pow(n_trials_list[i], -a) / sigmas[i]
+
+# get 0.564579695658 for example
 
 pylab.plot(n_trials_list, sigmas, 'o')
 pylab.gca().set_xscale('log')
