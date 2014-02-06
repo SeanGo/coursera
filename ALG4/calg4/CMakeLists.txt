@@ -13,8 +13,3 @@ set(TESTUF_SRC_FILES ${TESTUF_FILES} ${UF_SRC_FILES} ${LIBS_SRC_FILES})
 add_executable(test_uf ${TESTUF_SRC_FILES})
 target_link_libraries(test_uf ${LIBRARYS})
 
-set(PERCOLATE_FILES homework/percolate.c)
-set(PERCOLATE_SRC_FILES ${PERCOLATE_FILES} ${UF_SRC_FILES} ${LIBS_SRC_FILES})
-
-add_executable(percolate ${PERCOLATE_SRC_FILES})
-target_link_libraries(percolate ${LIBRARYS})
